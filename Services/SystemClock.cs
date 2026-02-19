@@ -6,6 +6,6 @@ public class SystemClock : IClock
 {
     public DateTime Today()
     {
-        throw new NotImplementedException();
+        return DateTime.Now;
     }
 }
