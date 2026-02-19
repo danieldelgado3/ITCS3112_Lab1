@@ -11,4 +11,5 @@ public interface IRepository
     void SaveRecord(CheckoutRecord record);
     CheckoutRecord? GetActiveRecordFor(string itemId);
     List<CheckoutRecord> AllRecords();
+    public void RemoveRecord(CheckoutRecord record);
 }

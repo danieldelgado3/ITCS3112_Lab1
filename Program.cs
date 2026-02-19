@@ -1,4 +1,5 @@
 ﻿using ITCS3112_Lab1.Contracts;
+using ITCS3112_Lab1.Domain;
 using ITCS3112_Lab1.Repository;
 using ITCS3112_Lab1.Services;
 
@@ -49,12 +50,99 @@ class Program
             switch (input)
             {
                 case "1":
-                    //ShowCourseCatalog();
+                    Console.Write("ID: ");
+                    var id = Console.ReadLine();
+
+                    Console.Write("Name: ");
+                    var name = Console.ReadLine();
+
+                    Console.Write("Category: ");
+                    var category = Console.ReadLine();
+
+                    Console.Write("Condition: ");
+                    var condition = Console.ReadLine();
+                    
+                    checkoutService.AddItem(id, name, category, condition);
                     break;
 
                 case "2":
-                    //EnrollNewStudent(studentService);
+                    List<Item> available = checkoutService.GetCatalog().ListAvailable();
+                    foreach (var item in available)
+                    {
+                        Console.WriteLine($"{item.Id} {item.Name} {item.Category} {item.Condition}");
+                    }
                     break;
+                
+                case "3":
+                    List<Item> unavailable = checkoutService.GetCatalog().ListCheckedOut();
+                    foreach (var item in unavailable)
+                    {
+                        Console.WriteLine($"{item.Id} {item.Name} {item.Category} {item.Condition}");
+                    }
+                    break;
+                
+                case "4":
+                    Console.Write("Enter item ID: ");
+                    var itemId = Console.ReadLine();
+
+                    Console.Write("Enter borrower ID: ");
+                    var borrowerId = Console.ReadLine();
+
+                    Console.Write("Enter borrower name: ");
+                    var borrowerName = Console.ReadLine();
+
+                    Console.Write("Enter borrower email: ");
+                    var borrowerEmail = Console.ReadLine();
+
+                    Console.Write("Enter due date (YYYY-MM-DD): ");
+                    var dueInput = Console.ReadLine();
+
+                    DateTime dueDate = DateTime.Parse(dueInput!);
+
+                    Borrower borrower = new Borrower(borrowerId, borrowerName, borrowerEmail);
+
+                    try
+                    {
+                        Receipt receipt = checkoutService.Checkout(itemId!, borrower, dueDate);
+                        Console.WriteLine(receipt.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    break;
+                
+                case "5":
+                    Console.Write("Enter item ID: ");
+                    var itemIdToReturn = Console.ReadLine();
+
+                    try
+                    {
+                        Receipt receipt = checkoutService.ReturnItem(itemIdToReturn);
+                        Console.WriteLine(receipt.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    break;
+                
+                case "6":
+
+                    break;
+                
+                case "7":
+                    List<CheckoutRecord> overdue =  checkoutService.FindOverdue();
+                    Console.WriteLine("Overdue Items:");
+                    foreach (var item in overdue)
+                    {
+                        Console.WriteLine($"{item.Item.Id}, {item.Borrower.Name}, {item.Borrower.Email}, Due: {item.DueDate}");
+                    }
+
+                    break;
+
 
                 case "0":
                     running = false;

@@ -11,4 +11,5 @@ public interface ICheckoutService
     List<CheckoutRecord> ListActiveLoans();
     List<CheckoutRecord> FindDueSoon(TimeSpan window);
     List<CheckoutRecord> FindOverdue();
+    void AddItem(string id, string name, string category, string condition);
 }

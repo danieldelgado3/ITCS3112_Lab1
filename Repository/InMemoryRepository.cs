@@ -54,6 +54,12 @@ public class InMemoryRepository : IRepository
         
         _checkoutRecords.Add(record);
     }
+    
+    public void RemoveRecord(CheckoutRecord record)
+    {
+        _checkoutRecords.Remove(record);
+    }
+
 
     public CheckoutRecord? GetActiveRecordFor(string itemId)
     {
