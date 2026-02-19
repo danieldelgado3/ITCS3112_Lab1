@@ -25,6 +25,34 @@ public class DefaultCatalog : ICatalog
         }
         return availableItems;
     }
+    
+    public List<Item> ListCheckedOut()
+    {
+        List<Item> items = new List<Item>(_repository.AllItems());
+        List<Item> checkedOutItems = new List<Item>();
+        foreach (var item in items)
+        {
+            if (item.Status == ItemStatus.CheckedOut)
+            {
+                checkedOutItems.Add(item);
+            }
+        }
+        return checkedOutItems;
+    }
+    
+    public List<Item> ListLost()
+    {
+        List<Item> items = new List<Item>(_repository.AllItems());
+        List<Item> lostItems = new List<Item>();
+        foreach (var item in items)
+        {
+            if (item.Status == ItemStatus.Lost)
+            {
+                lostItems.Add(item);
+            }
+        }
+        return lostItems;
+    }
 
     public Item? FindById(string itemId)
     {
