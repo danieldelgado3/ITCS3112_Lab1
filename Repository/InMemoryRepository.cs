@@ -5,7 +5,7 @@ namespace ITCS3112_Lab1.Repository;
 
 public class InMemoryRepository : IRepository
 {
-    private List<Item> _inventory;
+    private  List<Item> _inventory;
     private List<CheckoutRecord> _checkoutRecords;
 
     public InMemoryRepository()
@@ -16,31 +16,59 @@ public class InMemoryRepository : IRepository
 
     public void SaveItem(Item item)
     {
-        throw new NotImplementedException();
+        if (item is null)
+        {
+            throw new ArgumentNullException(nameof(item));
+        }
+
+        if (_inventory.Any(i => i.Id == item.Id))
+        {
+            throw new InvalidOperationException($"Item with id {item.Id} already exists");
+        }
+        _inventory.Add(item);
     }
 
     public Item? GetItem(string itemId)
     {
-        throw new NotImplementedException();
+        foreach (Item item in _inventory)
+        {
+            if (item.Id == itemId)
+            {
+                return item;
+            }
+        }
+        throw new KeyNotFoundException($"Item with id {itemId} does not exist");
     }
 
     public List<Item> AllItems()
     {
-        throw new NotImplementedException();
+        return _inventory;
     }
 
     public void SaveRecord(CheckoutRecord record)
     {
-        throw new NotImplementedException();
+        if (record is null)
+        {
+            throw new ArgumentNullException(nameof(record));
+        }
+        
+        _checkoutRecords.Add(record);
     }
 
     public CheckoutRecord? GetActiveRecordFor(string itemId)
     {
-        throw new NotImplementedException();
+        foreach (CheckoutRecord record in _checkoutRecords)
+        {
+            if (record.Item.Id == itemId)
+            {
+                return record;
+            } 
+        }
+        throw new KeyNotFoundException($"Item with id {itemId} does not exist");
     }
 
     public List<CheckoutRecord> AllRecords()
     {
-        throw new NotImplementedException();
+        return  _checkoutRecords;
     }
 }
