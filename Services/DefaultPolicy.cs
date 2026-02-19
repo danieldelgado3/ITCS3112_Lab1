@@ -7,7 +7,7 @@ public class DefaultPolicy : IPolicy
 {
     public bool CanCheckout(Item item)
     {
-        throw new NotImplementedException();
+        return item.Status == ItemStatus.Available;
     }
 
     public DateTime NormalizeDueDate(DateTime proposed)
