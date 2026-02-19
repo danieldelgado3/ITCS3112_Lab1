@@ -14,12 +14,28 @@ public class DefaultCatalog : ICatalog
 
     public List<Item> ListAvailable()
     {
-        throw new NotImplementedException();
+        List<Item> items = new List<Item>(_repository.AllItems());
+        List<Item> availableItems = new List<Item>();
+        foreach (var item in items)
+        {
+            if (item.Status == ItemStatus.Available)
+            {
+                availableItems.Add(item);
+            }
+        }
+        return availableItems;
     }
 
     public Item? FindById(string itemId)
     {
-        throw new NotImplementedException();
+        foreach (Item item in _repository.AllItems())
+        {
+            if (item.Id == itemId)
+            {
+                return item;
+            }
+        }
+        throw new KeyNotFoundException($"Item with id {itemId} does not exist");
     }
 
     public List<Item> SearchBy(string query)
